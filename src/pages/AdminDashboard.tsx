@@ -17,7 +17,7 @@ import { useJobs } from "@/hooks/useJobs";
 import { useApplicants } from "@/hooks/useApplicants";
 import { ApplicantStatus, JobPriority, JobType } from "@/types";
 
-import logo from "C:\Users\karth\OneDrive\Desktop\Dharvista-Hr\Dharvista_hr_01\src\assets\favicon.jpg";
+import logo from "scr/assets/favicon.jpg";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
