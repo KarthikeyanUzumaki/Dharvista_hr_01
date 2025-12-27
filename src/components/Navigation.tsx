@@ -3,8 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// 👇 YOUR LOGO IMPORT
-import logo from "@/assets/favicon.jpg";
+
+import logo from "../assets/dharvista-logo.jpg";
 
 const navLinks = [
   { href: "/", label: "Home" },
