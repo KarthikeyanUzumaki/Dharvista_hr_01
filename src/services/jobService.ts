@@ -1,67 +1,34 @@
 // src/services/jobService.ts
 import { Job } from "@/types";
+// 🟢 Import the actual jobs from your mock file
+import { MOCK_JOBS } from "@/mock/jobs"; 
 
 const STORAGE_KEY = "dharvista_jobs";
 
-// 🟢 DUMMY DATA (Now matches your 'Job' type perfectly)
-const SAMPLE_JOBS: Job[] = [
-  {
-    id: "1",
-    title: "Senior Site Engineer",
-    location: "Chennai, TN",
-    industry: "Construction",
-    description: "Leading residential project in OMR requires senior engineer...",
-    eligibility: "B.E. Civil\n5+ Years Experience",
-    salaryMin: 35000,
-    salaryMax: 50000,
-    salaryCurrency: "INR", // 👈 Added this
-    experienceMin: 5,
-    experienceMax: 8,
-    type: "full-time",
-    priority: "urgent",
-    status: "published",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(), // 👈 Added this
-    googleFormUrl: "https://forms.google.com"
-  },
-  {
-    id: "2",
-    title: "Safety Supervisor",
-    location: "Coimbatore, TN",
-    industry: "Industrial Safety",
-    description: "Ensure safety protocols at high-rise construction sites...",
-    eligibility: "Diploma in Industrial Safety\nNebosh Certified",
-    salaryMin: 20000,
-    salaryMax: 28000,
-    salaryCurrency: "INR", // 👈 Added this
-    experienceMin: 2,
-    experienceMax: 4,
-    type: "contract",
-    priority: "normal",
-    status: "published",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(), // 👈 Added this
-    googleFormUrl: "https://forms.google.com"
-  }
-];
-
 export const jobService = {
-  // 🟢 HELPER: Check if empty, then add sample data
+  // 🟢 Updated to use MOCK_JOBS
   checkAndSeed: () => {
     const data = localStorage.getItem(STORAGE_KEY);
+    // If no data OR if data is empty array, seed it
     if (!data || JSON.parse(data).length === 0) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(SAMPLE_JOBS));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(MOCK_JOBS));
     }
   },
 
   getAll: async (): Promise<Job[]> => {
-    // Run the check before getting data
     const data = localStorage.getItem(STORAGE_KEY);
     if (!data) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(SAMPLE_JOBS));
-      return SAMPLE_JOBS;
+      // Seed if data doesn't exist at all
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(MOCK_JOBS));
+      return MOCK_JOBS;
     }
-    return JSON.parse(data);
+    const parsedData = JSON.parse(data);
+    // If data exists but is an empty list, seed it
+    if (parsedData.length === 0) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(MOCK_JOBS));
+        return MOCK_JOBS;
+    }
+    return parsedData;
   },
 
   getById: async (id: string): Promise<Job | undefined> => {
@@ -75,8 +42,8 @@ export const jobService = {
         ...job, 
         id: crypto.randomUUID(), 
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(), // Ensure new jobs have this too
-        salaryCurrency: "INR"                // Ensure new jobs have this too
+        updatedAt: new Date().toISOString(),
+        salaryCurrency: "INR"
     };
     const data = localStorage.getItem(STORAGE_KEY);
     const jobs = data ? JSON.parse(data) : [];

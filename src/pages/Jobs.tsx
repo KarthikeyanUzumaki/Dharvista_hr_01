@@ -7,8 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, MapPin, Briefcase, Filter, ArrowRight, Flame, Loader2, ChevronDown } from "lucide-react";
+
+// 🟢 Import your custom searchable component
+// (Make sure the path matches where you saved FilterSelect.tsx)
+import { FilterSelect } from "@/components/filters/FilterSelect";
 
 // Hooks & Types
 import { useJobs } from "@/hooks/useJobs";
@@ -18,24 +21,34 @@ export default function JobsPage() {
   const { jobs, isLoading } = useJobs();
 
   // Filter States
+  // 🟢 CHANGED: Default to "" (empty string) because FilterSelect uses "" for 'All'
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedIndustry, setSelectedIndustry] = useState<string>("all");
-  const [selectedLocation, setSelectedLocation] = useState<string>("all");
+  const [selectedIndustry, setSelectedIndustry] = useState<string>("");
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
 
-  // 🟢 NEW: Pagination State (Start with 6 jobs)
+  // Pagination State
   const [visibleCount, setVisibleCount] = useState(6);
   const JOBS_PER_PAGE = 6;
 
-  // Derive lists for dropdowns
-  const industries = Array.from(new Set(jobs.map((j) => j.industry)));
-  const locations = Array.from(new Set(jobs.map((j) => j.location)));
+  // 🟢 DYNAMIC LISTS (Auto-Growing)
+  // We use useMemo so this doesn't recalculate on every render
+  const industries = useMemo(() => {
+    // 1. Get all industries, 2. Remove duplicates, 3. Remove empty/null, 4. Sort
+    const raw = jobs.map((j) => j.industry);
+    return Array.from(new Set(raw)).filter(Boolean).sort();
+  }, [jobs]);
+
+  const locations = useMemo(() => {
+    const raw = jobs.map((j) => j.location);
+    return Array.from(new Set(raw)).filter(Boolean).sort();
+  }, [jobs]);
 
   // Scroll to top on load
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // 🟢 NEW: Reset pagination when filters change
+  // Reset pagination when filters change
   useEffect(() => {
     setVisibleCount(JOBS_PER_PAGE);
   }, [searchTerm, selectedIndustry, selectedLocation]);
@@ -46,17 +59,17 @@ export default function JobsPage() {
       const matchesSearch =
         job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesIndustry = selectedIndustry === "all" || job.industry === selectedIndustry;
-      const matchesLocation = selectedLocation === "all" || job.location === selectedLocation;
+      
+      // 🟢 CHANGED: Check against "" for 'All'
+      const matchesIndustry = selectedIndustry === "" || job.industry === selectedIndustry;
+      const matchesLocation = selectedLocation === "" || job.location === selectedLocation;
 
       return matchesSearch && matchesIndustry && matchesLocation;
     });
   }, [jobs, searchTerm, selectedIndustry, selectedLocation]);
 
-  // 🟢 NEW: Slice the data to show only visible count
   const visibleJobs = filteredJobs.slice(0, visibleCount);
 
-  // 🟢 NEW: Handler to load more
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + JOBS_PER_PAGE);
   };
@@ -67,16 +80,13 @@ export default function JobsPage() {
       <section className="relative min-h-[40vh] flex flex-col items-center justify-center bg-primary text-primary-foreground overflow-hidden pt-20 pb-16">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary via-primary to-[#051530]" />
         <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-[100px] pointer-events-none" />
-
         <div className="relative z-10 container mx-auto px-4 text-center">
           <div className="opacity-0 animate-slide-up" style={{ animationDelay: "100ms" }}>
             <h1 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow-md">Current Openings</h1>
           </div>
           <div className="opacity-0 animate-fade-in" style={{ animationDelay: "150ms" }}>
             <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto font-light">
-              Explore open positions across Tamil Nadu and take the next step in your professional journey.
+              Explore open positions across Tamil Nadu.
             </p>
           </div>
         </div>
@@ -85,7 +95,6 @@ export default function JobsPage() {
       {/* MAIN CONTENT */}
       <section className="py-12 bg-gray-50 min-h-screen">
         <div className="container mx-auto px-4 max-w-6xl">
-          
           <div className="flex flex-col lg:flex-row gap-8 relative z-20">
             
             {/* SIDEBAR FILTERS */}
@@ -108,42 +117,30 @@ export default function JobsPage() {
                 </div>
               </div>
 
-              {/* Industry */}
+              {/* 🟢 NEW: Industry FilterSelect */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Industry</label>
-                <Select value={selectedIndustry} onValueChange={setSelectedIndustry}>
-                  <SelectTrigger className="bg-gray-50 border-gray-200">
-                    <SelectValue placeholder="All Industries" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Industries</SelectItem>
-                    {industries.map((ind) => (
-                      <SelectItem key={ind} value={ind}>{ind}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                 <FilterSelect 
+                    label="Industry"
+                    options={industries}
+                    value={selectedIndustry}
+                    onChange={setSelectedIndustry}
+                 />
               </div>
 
-              {/* Location */}
+              {/* 🟢 NEW: Location FilterSelect */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Location</label>
-                <Select value={selectedLocation} onValueChange={setSelectedLocation}>
-                  <SelectTrigger className="bg-gray-50 border-gray-200">
-                    <SelectValue placeholder="All Locations" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Locations</SelectItem>
-                    {locations.map((loc) => (
-                      <SelectItem key={loc} value={loc}>{loc}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                 <FilterSelect 
+                    label="Location"
+                    options={locations}
+                    value={selectedLocation}
+                    onChange={setSelectedLocation}
+                 />
               </div>
               
               <Button 
                 variant="outline" 
                 className="w-full mt-4 border-primary/20 text-primary hover:bg-primary/5"
-                onClick={() => { setSearchTerm(""); setSelectedIndustry("all"); setSelectedLocation("all"); }}
+                onClick={() => { setSearchTerm(""); setSelectedIndustry(""); setSelectedLocation(""); }}
               >
                 Reset Filters
               </Button>
@@ -165,20 +162,18 @@ export default function JobsPage() {
               ) : filteredJobs.length === 0 ? (
                 <div className="text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
                   <p className="text-gray-500">No jobs found matching your filters.</p>
-                  <Button variant="link" onClick={() => { setSearchTerm(""); setSelectedIndustry("all"); setSelectedLocation("all"); }}>
+                  <Button variant="link" onClick={() => { setSearchTerm(""); setSelectedIndustry(""); setSelectedLocation(""); }}>
                     Clear Filters
                   </Button>
                 </div>
               ) : (
                 <>
-                  {/* 🟢 Render only visible jobs */}
                   <div className="space-y-4">
                     {visibleJobs.map((job) => (
                       <JobCard key={job.id} job={job} />
                     ))}
                   </div>
 
-                  {/* 🟢 "LOAD MORE" BUTTON */}
                   {visibleCount < filteredJobs.length && (
                     <div className="flex justify-center pt-8 pb-4">
                       <Button 
@@ -187,15 +182,15 @@ export default function JobsPage() {
                         size="lg"
                         className="bg-white hover:bg-gray-50 border-gray-200 text-gray-600 px-8"
                       >
-                         Load More Jobs <ChevronDown className="ml-2 h-4 w-4" />
+                          Load More Jobs <ChevronDown className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                   )}
                   
                   {visibleCount >= filteredJobs.length && filteredJobs.length > 0 && (
-                     <p className="text-center text-xs text-gray-400 pt-8 pb-4">
-                        You've reached the end of the list.
-                     </p>
+                      <p className="text-center text-xs text-gray-400 pt-8 pb-4">
+                         You've reached the end of the list.
+                      </p>
                   )}
                 </>
               )}
@@ -207,9 +202,8 @@ export default function JobsPage() {
   );
 }
 
-// JOB CARD COMPONENT
+// JOB CARD COMPONENT (No Changes needed here, but keeping it for completeness)
 function JobCard({ job }: { job: Job }) {
-  
   const formatJobType = (type: string) => {
     return type?.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   };

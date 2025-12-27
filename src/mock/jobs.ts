@@ -6,7 +6,7 @@ export const MOCK_JOBS: Job[] = [
     id: "job-001",
     title: "HR Executive",
     location: "Aruppukottai",
-    industry: "Human Resources",
+    industry: "Human Resource Management",
     description: "We are seeking a dedicated HR Executive to manage recruitment processes, employee relations, and payroll administration. You will be the primary point of contact for all HR-related queries.",
     eligibility: "MBA in HR preferred. Must speak Tamil and English fluently. 1 year experience in manufacturing sector is a plus.",
     salaryMin: 15000,

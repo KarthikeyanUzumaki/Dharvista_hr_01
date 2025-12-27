@@ -18,7 +18,7 @@ export default function Login() {
 
     // SIMPLE ADMIN CHECK
     // You can change these credentials if you want
-    if (email === "admin@modelcorp.com" && password === "admin123") {
+    if (email === "dharvistahrplacementsolutions@gmail.com" && password === "admin123") {
       
       // 1. Save the "Proof of Login" to browser memory
       localStorage.setItem("admin_token", "true");
@@ -33,7 +33,7 @@ export default function Login() {
       }, 500);
 
     } else {
-      toast.error("Invalid credentials. Try admin123");
+      toast.error("Invalid credentials. Try again.");
       setIsLoading(false);
     }
   };
