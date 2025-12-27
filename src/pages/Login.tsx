@@ -18,7 +18,7 @@ export default function Login() {
 
     // SIMPLE ADMIN CHECK
     // You can change these credentials if you want
-    if (email === "@admin" && password === "admin123") {
+    if (email === "admin@gmail.com" && password === "admin123") {
       
       // 1. Save the "Proof of Login" to browser memory
       localStorage.setItem("admin_token", "true");
