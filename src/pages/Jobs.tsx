@@ -7,6 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { 
+  Sheet, 
+  SheetContent, 
+  SheetDescription, 
+  SheetHeader, 
+  SheetTitle, 
+  SheetTrigger 
+} from "@/components/ui/sheet";
 import { Search, MapPin, Briefcase, Filter, ArrowRight, Flame, Loader2, ChevronDown } from "lucide-react";
 
 import { FilterSelect } from "@/components/filters/FilterSelect";
@@ -19,6 +27,7 @@ export default function JobsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedIndustry, setSelectedIndustry] = useState<string>("");
   const [selectedLocation, setSelectedLocation] = useState<string>("");
+  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
   const [visibleCount, setVisibleCount] = useState(6);
   const JOBS_PER_PAGE = 6;
@@ -60,9 +69,62 @@ export default function JobsPage() {
     setVisibleCount((prev) => prev + JOBS_PER_PAGE);
   };
 
+  const hasActiveFilters = searchTerm || selectedIndustry || selectedLocation;
+
+  const resetFilters = () => {
+    setSearchTerm(""); 
+    setSelectedIndustry(""); 
+    setSelectedLocation("");
+    setIsFilterSheetOpen(false);
+  };
+
+  // Helper Component for Filter Logic
+  const FilterFormContent = () => (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700">Search</label>
+        <div className="relative">
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+          <Input
+            placeholder="Job title, keywords..."
+            className="pl-9 bg-gray-50 border-gray-200 focus-visible:ring-primary"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+         <FilterSelect 
+            label="Industry"
+            options={industries}
+            value={selectedIndustry}
+            onChange={setSelectedIndustry}
+         />
+      </div>
+
+      <div className="space-y-2">
+         <FilterSelect 
+            label="Location"
+            options={locations}
+            value={selectedLocation}
+            onChange={setSelectedLocation}
+         />
+      </div>
+      
+      <Button 
+        variant="outline" 
+        className="w-full mt-4 border-primary/20 text-primary hover:bg-primary/5"
+        onClick={resetFilters}
+      >
+        Reset Filters
+      </Button>
+    </div>
+  );
+
   return (
     <Layout>
-      {/* HEADER - Uses new Primary Blue Gradient */}
+      {/* HEADER */}
       <section className="relative min-h-[40vh] flex flex-col items-center justify-center bg-primary text-primary-foreground overflow-hidden pt-20 pb-16">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary via-primary to-[#051530]" />
         <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
@@ -83,54 +145,57 @@ export default function JobsPage() {
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="flex flex-col lg:flex-row gap-8 relative z-20">
             
-            {/* SIDEBAR FILTERS */}
+            {/* 🖥️ DESKTOP SIDEBAR 
+               ✅ RESTORED: 'sticky top-24' added back.
+               It will stick to the screen on Desktop as you scroll.
+            */}
             <aside className="hidden lg:block w-72 space-y-6 h-fit bg-white p-6 rounded-xl border border-gray-100 shadow-sm sticky top-24">
               <div className="flex items-center gap-2 font-semibold text-lg pb-4 border-b">
                 <Filter className="h-5 w-5 text-primary" /> Filter Jobs
               </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Search</label>
-                <div className="relative">
-                  <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                  <Input
-                    placeholder="Job title, keywords..."
-                    className="pl-9 bg-gray-50 border-gray-200 focus-visible:ring-primary"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                 <FilterSelect 
-                    label="Industry"
-                    options={industries}
-                    value={selectedIndustry}
-                    onChange={setSelectedIndustry}
-                 />
-              </div>
-
-              <div className="space-y-2">
-                 <FilterSelect 
-                    label="Location"
-                    options={locations}
-                    value={selectedLocation}
-                    onChange={setSelectedLocation}
-                 />
-              </div>
-              
-              <Button 
-                variant="outline" 
-                className="w-full mt-4 border-primary/20 text-primary hover:bg-primary/5"
-                onClick={() => { setSearchTerm(""); setSelectedIndustry(""); setSelectedLocation(""); }}
-              >
-                Reset Filters
-              </Button>
+              <FilterFormContent />
             </aside>
 
             {/* JOB LISTINGS GRID */}
             <div className="flex-1 space-y-5">
+              
+              {/* 📱 MOBILE FILTER BAR 
+                  ✅ UPDATED: Removed 'sticky top-20'.
+                  It is now just 'mb-4', so it stays at the top and scrolls away.
+              */}
+              <div className="lg:hidden mb-4 z-30">
+                <Sheet open={isFilterSheetOpen} onOpenChange={setIsFilterSheetOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" className="w-full justify-between bg-white border-gray-200 shadow-sm hover:bg-gray-50 h-12">
+                      <div className="flex items-center gap-2 text-gray-700">
+                        <Filter className="h-4 w-4" /> 
+                        <span className="font-medium">Filter Jobs</span>
+                      </div>
+                      {hasActiveFilters && (
+                        <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                          Active
+                        </Badge>
+                      )}
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="bottom" className="rounded-t-2xl max-h-[85vh] overflow-y-auto">
+                    <SheetHeader className="mb-6 text-left">
+                      <SheetTitle>Filter Jobs</SheetTitle>
+                      <SheetDescription>
+                        Narrow down the list by role, location, or industry.
+                      </SheetDescription>
+                    </SheetHeader>
+                    <FilterFormContent />
+                    <div className="pt-6">
+                      <Button className="w-full font-bold" onClick={() => setIsFilterSheetOpen(false)}>
+                        View {filteredJobs.length} Jobs
+                      </Button>
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </div>
+
+              {/* Results Count */}
               <div className="flex justify-between items-center px-2">
                 <h2 className="font-semibold text-gray-700">
                   Showing {visibleJobs.length} of {filteredJobs.length} Jobs
@@ -145,7 +210,7 @@ export default function JobsPage() {
               ) : filteredJobs.length === 0 ? (
                 <div className="text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
                   <p className="text-gray-500">No jobs found matching your filters.</p>
-                  <Button variant="link" onClick={() => { setSearchTerm(""); setSelectedIndustry(""); setSelectedLocation(""); }}>
+                  <Button variant="link" onClick={resetFilters}>
                     Clear Filters
                   </Button>
                 </div>
