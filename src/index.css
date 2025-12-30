@@ -2,10 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/*  Dharvista Design System - Corporate Clean */
+/* Dharvista Design System - Updated Colors */
 @layer base {
   :root {
-    /* Navy Blue Primary: #1e3a8a = HSL 224 76% 33% */
     --background: 0 0% 100%;
     --foreground: 224 76% 15%;
 
@@ -15,7 +14,9 @@
     --popover: 0 0% 100%;
     --popover-foreground: 224 76% 15%;
 
-    --primary: 224 76% 33%;
+    /* 🔵 NEW PRIMARY: #180093 (Deep Royal Blue) */
+    /* HSL approx: 250deg 100% 29% */
+    --primary: 250 100% 29%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 220 14% 96%;
@@ -24,33 +25,32 @@
     --muted: 220 14% 96%;
     --muted-foreground: 220 9% 46%;
 
-    --accent: 224 76% 33%;
-    --accent-foreground: 0 0% 100%;
+    /* 🟡 NEW SECONDARY/ACCENT: #FFCC00 (Golden Yellow) */
+    /* HSL approx: 48deg 100% 50% */
+    --accent: 48 100% 50%;
+    /* Black text looks best on yellow */
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 224 76% 33%;
+    --ring: 250 100% 29%; /* Matches Primary */
 
     --radius: 0.5rem;
 
     /* Custom tokens */
-    --navy: 224 76% 33%;
-    --navy-dark: 224 76% 20%;
-    --navy-light: 224 60% 50%;
-    --gray-light: 220 14% 96%;
-    --gray-medium: 220 9% 46%;
-
+    --navy: 250 100% 29%;
+    
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 224 76% 33%;
+    --sidebar-primary: 250 100% 29%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 14% 96%;
-    --sidebar-accent-foreground: 224 76% 15%;
+    --sidebar-accent: 48 100% 50%;
+    --sidebar-accent-foreground: 0 0% 0%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 224 76% 33%;
+    --sidebar-ring: 250 100% 29%;
   }
 
   .dark {
@@ -63,7 +63,7 @@
     --popover: 224 76% 12%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 224 60% 50%;
+    --primary: 250 100% 40%; /* Slightly lighter for dark mode */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 224 50% 20%;
@@ -72,24 +72,15 @@
     --muted: 224 50% 20%;
     --muted-foreground: 220 14% 70%;
 
-    --accent: 224 60% 50%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 48 100% 50%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 224 50% 20%;
     --input: 224 50% 20%;
-    --ring: 224 60% 50%;
-
-    --sidebar-background: 224 76% 10%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 224 60% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 224 50% 18%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 224 50% 18%;
-    --sidebar-ring: 224 60% 50%;
+    --ring: 250 100% 40%;
   }
 }
 
@@ -97,16 +88,13 @@
   * {
     @apply border-border;
   }
-
   html {
     scroll-behavior: smooth;
   }
-
   body {
     @apply bg-background text-foreground antialiased;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   }
-
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight;
   }
@@ -116,19 +104,15 @@
   .container-wide {
     @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
   }
-
   .section-padding {
     @apply py-16 md:py-24;
   }
-
   .card-corporate {
     @apply bg-card rounded-lg shadow-md border border-border p-6 transition-all duration-300 ease-out transform-gpu hover:-translate-y-2 hover:scale-105 hover:shadow-xl hover:border-primary/30;
   }
-
   .nav-link {
     @apply text-foreground/80 hover:text-primary transition-colors font-medium;
   }
-
   .nav-link-active {
     @apply text-primary font-semibold;
   }
@@ -138,26 +122,21 @@
   .text-balance {
     text-wrap: balance;
   }
-
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out forwards;
   }
-
   .animate-slide-up {
     animation: slideUp 0.6s ease-out forwards;
     opacity: 0;
   }
-
   .animate-fade-in-delay {
     animation: fadeIn 0.6s ease-out 0.2s forwards;
     opacity: 0;
   }
-
   .animate-zoom-slow {
     animation: zoomSlow 12s ease-in-out infinite;
     transform-origin: center;
   }
-
   .animate-scale-in {
     animation: scaleIn 0.45s cubic-bezier(.2,.9,.2,1) forwards;
     transform-origin: center;
@@ -166,31 +145,18 @@
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes zoomSlow {
   0% { transform: scale(1); }
   50% { transform: scale(1.03); }
   100% { transform: scale(1); }
 }
-
 @keyframes scaleIn {
   from { opacity: 0; transform: scale(0.98); }
   to { opacity: 1; transform: scale(1); }

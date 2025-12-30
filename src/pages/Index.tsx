@@ -16,7 +16,9 @@ export default function Index() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary via-primary to-[#051530]" />
         <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-[100px] pointer-events-none" />
+        
+        {/* 🟢 UPDATED: Changed bg-secondary/10 (Gray) to bg-accent/10 (Gold) for theme consistency */}
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="relative z-10 container-wide text-center">
           
@@ -44,7 +46,7 @@ export default function Index() {
             </p>
           </div>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons (Original colors kept) */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20 opacity-0 animate-fade-in" style={{ animationDelay: "400ms" }}>
             <Button asChild size="xl" className="bg-white text-primary hover:bg-gray-100 font-bold text-lg px-8 h-14 border-none shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1">
               <Link to="/jobs">
@@ -62,7 +64,7 @@ export default function Index() {
             </Button>
           </div>
 
-          {/* STATS BAR */}
+          {/* STATS BAR (Original colors kept) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto border-t border-white/10 pt-12 opacity-0 animate-slide-up" style={{ animationDelay: "500ms" }}>
             
             <div className="text-center">
@@ -91,11 +93,11 @@ export default function Index() {
         </div>
       </section>
   
-      {/* 🟢 LATEST OPENINGS (4 Column Grid, White Background) */}
+      {/* 🟢 LATEST OPENINGS (White Background) */}
       <LatestJobsSection />
       
-      {/* 🟢 WHO WE ARE (4 Column Grid, Grey Background) */}
-      <section className="section-padding bg-gray-100">
+      {/* 🟢 WHO WE ARE (BG is Amber-50) */}
+      <section className="section-padding bg-amber-50">
         <div className="container-wide">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -113,7 +115,6 @@ export default function Index() {
             </p>
           </div>
 
-          {/* Updated Grid to 4 Columns (lg:grid-cols-4) and Card Style (p-10, shadow-xl) */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { 
@@ -141,7 +142,8 @@ export default function Index() {
               return (
                 <div
                   key={index}
-                  className="opacity-0 animate-slide-up group relative rounded-2xl border border-border bg-white p-10 text-center transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl"
+                  // 🟢 UPDATED: border-border -> border-amber-100 to blend with gold BG
+                  className="opacity-0 animate-slide-up group relative rounded-2xl border border-amber-100 bg-white p-10 text-center transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:border-accent/30"
                   style={{ animationDelay: `${100 + index * 75}ms` }}
                 >
                   {/* Icon Circle */}
@@ -164,14 +166,16 @@ export default function Index() {
         </div>
       </section>
 
-      {/* 🟢 INDUSTRIES (4 Column Grid, White Background) */}
+      {/* 🟢 INDUSTRIES (Imported - This should be White based on previous steps, or Amber if you updated it) */}
       <IndustriesSection />
 
-      {/* 🟢 TRUSTED BY (4 Column Grid, Grey Background) */}
-      <ClienteleSection />
+      {/* 🟢 TRUSTED BY (Wrapped in Amber-50) */}
+      <div className="bg-amber-50">
+        <ClienteleSection />
+      </div>
       
-      {/* CTA Section */}
-      <section className="section-padding bg-secondary">
+      {/* 🟢 CTA Section (BG is Amber-50) */}
+      <section className="section-padding bg-amber-50 border-t border-amber-100">
         <div className="container-wide text-center">
           <div className="opacity-0 animate-fade-in" style={{ animationDelay: "150ms" }}>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -181,6 +185,7 @@ export default function Index() {
               Browse our current openings or get in touch with our team to discuss
               your career aspirations.
             </p>
+            {/* Original button style kept */}
             <Button asChild size="lg">
               <Link to="/jobs">
                 Explore Careers

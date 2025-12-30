@@ -16,7 +16,7 @@ export const MOCK_JOBS: Job[] = [
     experienceMax: 2,
     type: 'full-time',
     status: 'published',
-    priority: 'normal',
+    priority: 'urgent',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },

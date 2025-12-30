@@ -17,11 +17,16 @@ import {
 } from "lucide-react";
 import { useJobs } from "@/hooks/useJobs";
 import { Job } from "@/types";
+// 🟢 Import the new component
+import { JobApplicationModal } from "@/components/jobs/JobApplicationModal";
 
 export default function JobDetail() {
   const { id } = useParams();
   const { jobs } = useJobs();
   const [job, setJob] = useState<Job | null>(null);
+  
+  // 🟢 State for the Application Modal
+  const [isApplyOpen, setIsApplyOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -47,16 +52,15 @@ export default function JobDetail() {
     <Layout>
       <div className="min-h-screen bg-gray-50 pb-20">
         
-        {/* 🟢 1. HEADER: Gradient + Dot Pattern + Glow */}
+        {/* 🟢 HEADER */}
         <div className="relative bg-primary text-primary-foreground pt-28 pb-12 px-4 shadow-md overflow-hidden">
             
-            {/* ✨ Background Effects */}
+            {/* Background Effects */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary via-primary to-[#051530]" />
             <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-400/20 rounded-full blur-[100px] pointer-events-none" />
             <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-[100px] pointer-events-none" />
 
-            {/* ✨ Header Content (z-10 ensures it sits ABOVE the background) */}
             <div className="relative z-10 container mx-auto max-w-7xl">
                 <Link to="/jobs" className="inline-flex items-center text-blue-100 hover:text-white mb-6 transition-colors">
                     <ArrowLeft className="mr-2 h-4 w-4" /> Back to Jobs
@@ -69,7 +73,7 @@ export default function JobDetail() {
                             
                             {/* Urgent Badge */}
                             {job.priority === 'urgent' && (
-                                <Badge variant="destructive" className="flex items-center gap-1 h-7 animate-pulse border-white/20 bg-red-500 text-white shadow-sm">
+                                <Badge variant="secondary" className="flex items-center gap-1 h-7 border-white/20 bg-accent text-accent-foreground shadow-sm">
                                     <Flame className="w-3.5 h-3.5 fill-current" /> Urgent Hiring
                                 </Badge>
                             )}
@@ -91,18 +95,20 @@ export default function JobDetail() {
                     </div>
 
                     <div className="flex gap-3">
-                        <Link to="/contact">
-                            {/* White Button on Blue Header */}
-                            <Button size="lg" className="bg-white text-primary hover:bg-gray-100 font-bold px-8 shadow-sm transition-transform hover:translate-y-[-2px]">
-                                Apply Now
-                            </Button>
-                        </Link>
+                        {/* 🟢 UPDATED: Click handler triggers Modal instead of navigating */}
+                        <Button 
+                          size="lg" 
+                          className="bg-accent text-accent-foreground hover:bg-accent/90 font-bold px-8 shadow-sm transition-transform hover:translate-y-[-2px]"
+                          onClick={() => setIsApplyOpen(true)}
+                        >
+                            Apply Now
+                        </Button>
                     </div>
                 </div>
             </div>
         </div>
 
-        {/* 🟢 2. TWO-COLUMN LAYOUT */}
+        {/* 🟢 TWO-COLUMN LAYOUT */}
         <div className="container mx-auto max-w-7xl px-4 mt-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 
@@ -188,12 +194,13 @@ export default function JobDetail() {
                             </div>
 
                             <div className="pt-4 border-t border-gray-100">
-                                <Link to="/contact" className="block w-full">
-                                    {/* Primary Blue Button on White Card */}
-                                    <Button className="w-full bg-primary hover:bg-primary/90 text-white text-lg h-12 shadow-md">
-                                        Apply Now
-                                    </Button>
-                                </Link>
+                                {/* 🟢 UPDATED: Click handler triggers Modal */}
+                                <Button 
+                                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground text-lg h-12 shadow-md"
+                                  onClick={() => setIsApplyOpen(true)}
+                                >
+                                    Apply Now
+                                </Button>
                                 <p className="text-xs text-center text-gray-400 mt-3">
                                     Please mention the Job Title in your application.
                                 </p>
@@ -204,6 +211,14 @@ export default function JobDetail() {
 
             </div>
         </div>
+
+        {/* 🟢 ADDED: Modal Component */}
+        <JobApplicationModal 
+          job={job} 
+          open={isApplyOpen} 
+          onOpenChange={setIsApplyOpen} 
+        />
+        
       </div>
     </Layout>
   );

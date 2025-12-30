@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Briefcase, ArrowRight } from "lucide-react";
+import { MapPin, Briefcase, ArrowRight, Flame } from "lucide-react"; // Added Flame icon
 import { useJobs } from "@/hooks/useJobs";
 import { Job } from "@/types";
 
@@ -19,7 +19,8 @@ export default function LatestJobsSection() {
   }
 
   return (
-    <section className="section-padding bg-background">
+    // 🟢 EXPLICIT: bg-white to contrast with the Amber-50 sections
+    <section className="section-padding bg-white">
       <div className="container-wide">
         
         <div className="text-center mb-16">
@@ -54,12 +55,17 @@ export default function LatestJobsSection() {
 
 function JobCard({ job }: { job: Job }) {
   return (
-    <Card className="flex flex-col h-full hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-t-4 border-t-primary rounded-2xl overflow-hidden bg-white">
+    // 🟢 UPDATED: border-gray-100 -> border-amber-100 (Subtle gold border)
+    <Card className="flex flex-col h-full hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-amber-100 border-t-4 border-t-primary rounded-2xl overflow-hidden bg-white">
       <CardHeader className="p-6 pb-4">
         <div className="flex justify-between items-start">
-          <Badge variant="secondary" className="mb-2 bg-gray-100 text-gray-700 hover:bg-gray-200">{job.industry}</Badge>
+          <Badge variant="secondary" className="mb-2 bg-gray-50 text-gray-700 hover:bg-gray-100 border-gray-200">{job.industry}</Badge>
+          
+          {/* 🟢 UPDATED: Urgent Badge uses Accent (Yellow) + Flame Icon */}
           {job.priority === 'urgent' && (
-            <Badge variant="destructive" className="text-xs">Urgent</Badge>
+            <Badge variant="secondary" className="flex items-center gap-1 text-[10px] px-1.5 h-5 bg-accent text-accent-foreground border-yellow-400">
+                <Flame className="w-3 h-3 fill-current" /> Urgent
+            </Badge>
           )}
         </div>
         <CardTitle className="text-xl line-clamp-1 text-gray-900" title={job.title}>

@@ -9,31 +9,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Search, MapPin, Briefcase, Filter, ArrowRight, Flame, Loader2, ChevronDown } from "lucide-react";
 
-// 🟢 Import your custom searchable component
-// (Make sure the path matches where you saved FilterSelect.tsx)
 import { FilterSelect } from "@/components/filters/FilterSelect";
-
-// Hooks & Types
 import { useJobs } from "@/hooks/useJobs";
 import { Job } from "@/types";
 
 export default function JobsPage() {
   const { jobs, isLoading } = useJobs();
 
-  // Filter States
-  // 🟢 CHANGED: Default to "" (empty string) because FilterSelect uses "" for 'All'
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedIndustry, setSelectedIndustry] = useState<string>("");
   const [selectedLocation, setSelectedLocation] = useState<string>("");
 
-  // Pagination State
   const [visibleCount, setVisibleCount] = useState(6);
   const JOBS_PER_PAGE = 6;
 
-  // 🟢 DYNAMIC LISTS (Auto-Growing)
-  // We use useMemo so this doesn't recalculate on every render
   const industries = useMemo(() => {
-    // 1. Get all industries, 2. Remove duplicates, 3. Remove empty/null, 4. Sort
     const raw = jobs.map((j) => j.industry);
     return Array.from(new Set(raw)).filter(Boolean).sort();
   }, [jobs]);
@@ -43,24 +33,20 @@ export default function JobsPage() {
     return Array.from(new Set(raw)).filter(Boolean).sort();
   }, [jobs]);
 
-  // Scroll to top on load
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Reset pagination when filters change
   useEffect(() => {
     setVisibleCount(JOBS_PER_PAGE);
   }, [searchTerm, selectedIndustry, selectedLocation]);
 
-  // Filter Logic
   const filteredJobs = useMemo(() => {
     return jobs.filter((job) => {
       const matchesSearch =
         job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.description.toLowerCase().includes(searchTerm.toLowerCase());
       
-      // 🟢 CHANGED: Check against "" for 'All'
       const matchesIndustry = selectedIndustry === "" || job.industry === selectedIndustry;
       const matchesLocation = selectedLocation === "" || job.location === selectedLocation;
 
@@ -76,7 +62,7 @@ export default function JobsPage() {
 
   return (
     <Layout>
-      {/* HEADER */}
+      {/* HEADER - Uses new Primary Blue Gradient */}
       <section className="relative min-h-[40vh] flex flex-col items-center justify-center bg-primary text-primary-foreground overflow-hidden pt-20 pb-16">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary via-primary to-[#051530]" />
         <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
@@ -103,7 +89,6 @@ export default function JobsPage() {
                 <Filter className="h-5 w-5 text-primary" /> Filter Jobs
               </div>
 
-              {/* Search */}
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">Search</label>
                 <div className="relative">
@@ -117,7 +102,6 @@ export default function JobsPage() {
                 </div>
               </div>
 
-              {/* 🟢 NEW: Industry FilterSelect */}
               <div className="space-y-2">
                  <FilterSelect 
                     label="Industry"
@@ -127,7 +111,6 @@ export default function JobsPage() {
                  />
               </div>
 
-              {/* 🟢 NEW: Location FilterSelect */}
               <div className="space-y-2">
                  <FilterSelect 
                     label="Location"
@@ -189,7 +172,7 @@ export default function JobsPage() {
                   
                   {visibleCount >= filteredJobs.length && filteredJobs.length > 0 && (
                       <p className="text-center text-xs text-gray-400 pt-8 pb-4">
-                         You've reached the end of the list.
+                          You've reached the end of the list.
                       </p>
                   )}
                 </>
@@ -202,7 +185,6 @@ export default function JobsPage() {
   );
 }
 
-// JOB CARD COMPONENT (No Changes needed here, but keeping it for completeness)
 function JobCard({ job }: { job: Job }) {
   const formatJobType = (type: string) => {
     return type?.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -220,8 +202,9 @@ function JobCard({ job }: { job: Job }) {
                     {job.title}
                     </h3>
                     
+                    {/* 🟡 Yellow Badge for Urgent */}
                     {job.priority === 'urgent' && (
-                        <Badge variant="destructive" className="flex items-center gap-1 text-[10px] px-1.5 h-5 animate-pulse">
+                        <Badge variant="secondary" className="flex items-center gap-1 text-[10px] px-1.5 h-5 bg-accent text-accent-foreground border-yellow-400">
                             <Flame className="w-3 h-3 fill-current" /> Urgent
                         </Badge>
                     )}

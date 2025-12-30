@@ -66,11 +66,12 @@ export default function About() {
         </div>
       </section>
 
-      {/* 🟢 MISSION & VISION SECTION (White) */}
+      {/* 🟢 MISSION & VISION SECTION (White BG) */}
       <section className="section-padding bg-white">
         <div className="container-wide">
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-gray-50 p-10 rounded-2xl border border-gray-100 h-full shadow-sm hover:shadow-md transition-shadow">
+            {/* 🟢 UPDATED: bg-gray-50 -> bg-amber-50, border-gray-100 -> border-amber-100 */}
+            <div className="bg-white p-10 rounded-2xl border border-amber-100 h-full shadow-sm hover:shadow-md transition-shadow">
               <div className="h-14 w-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 text-primary">
                 <Target className="h-7 w-7" />
               </div>
@@ -80,7 +81,8 @@ export default function About() {
               </p>
             </div>
 
-            <div className="bg-gray-50 p-10 rounded-2xl border border-gray-100 h-full shadow-sm hover:shadow-md transition-shadow">
+            {/* 🟢 UPDATED: bg-gray-50 -> bg-amber-50, border-gray-100 -> border-amber-100 */}
+            <div className="bg-white p-10 rounded-2xl border border-amber-100 h-full shadow-sm hover:shadow-md transition-shadow">
               <div className="h-14 w-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-6 text-secondary-foreground">
                 <Lightbulb className="h-7 w-7" />
               </div>
@@ -93,8 +95,8 @@ export default function About() {
         </div>
       </section>
 
-      {/* 🟢 CORE VALUES (Grey) */}
-      <section className="section-padding bg-gray-100 border-t border-gray-200">
+      {/* 🟢 CORE VALUES (Background Changed to Amber-50) */}
+      <section className="section-padding bg-amber-50 border-t border-amber-100">
         <div className="container-wide">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -158,7 +160,8 @@ export default function About() {
               const Icon = value.icon;
               return (
                 <div key={index} className="h-full">
-                  <div className="flex flex-col h-full p-10 rounded-2xl bg-white border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                  {/* 🟢 UPDATED: border-gray-100 -> border-amber-100 */}
+                  <div className="flex flex-col h-full p-10 rounded-2xl bg-white border border-amber-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                     <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-2xl mb-8">
                       <Icon className="h-8 w-8" />
                     </div>
@@ -176,8 +179,8 @@ export default function About() {
         </div>
       </section>
 
-      {/* 🟢 NEW SECTION: WHY CHOOSE US (White) */}
-      <section className="section-padding bg-white border-t border-gray-100">
+      {/* 🟢 NEW SECTION: WHY CHOOSE US (White BG, Updated Top Border) */}
+      <section className="section-padding bg-white border-t border-amber-100">
         <div className="container-wide">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -195,7 +198,8 @@ export default function About() {
               return (
                 <div 
                   key={index} 
-                  className="group flex items-center gap-6 p-8 rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                  // 🟢 UPDATED: border-gray-100 -> border-amber-100
+                  className="group flex items-center gap-6 p-8 rounded-2xl border border-amber-100 bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                 >
                   <div className="h-16 w-16 rounded-full bg-primary/5 flex items-center justify-center text-primary shrink-0 transition-colors group-hover:bg-primary group-hover:text-white">
                     <Icon className="h-8 w-8" />
@@ -210,7 +214,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* 🟢 CLIENTELE (Grey) */}
+      {/* 🟢 CLIENTELE (Already Updated to Amber-50) */}
       <ClienteleSection />
     </Layout>
   );

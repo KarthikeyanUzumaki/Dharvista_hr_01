@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-
 import logo from "../assets/dharvista-logo.jpg";
 
 const navLinks = [
@@ -21,10 +20,10 @@ export function Navigation() {
   const lastScrollY = useRef(0);
   const headerRef = useRef<HTMLElement | null>(null);
 
-  // Keep CSS var for nav top to support sticky elements below header
   useEffect(() => {
     function updateNavTop() {
-      const h = headerRef.current?.offsetHeight ?? 64;
+      // Increased base height for bigger logo
+      const h = headerRef.current?.offsetHeight ?? 96; 
       const topValue = isHidden ? '0px' : `${h}px`;
       document.documentElement.style.setProperty('--nav-top', topValue);
     }
@@ -33,28 +32,21 @@ export function Navigation() {
     return () => window.removeEventListener('resize', updateNavTop);
   }, [isHidden, isOpen]);
 
-  // Hide on scroll down, show on scroll up
   useEffect(() => {
     function onScroll() {
       const y = window.scrollY || window.pageYOffset;
-      
-      // If mobile menu is open, keep header visible
       if (isOpen) {
         lastScrollY.current = y;
         setIsHidden(false);
         return;
       }
-
       if (y > lastScrollY.current && y > 100) {
-        // scrolling down
         setIsHidden(true);
       } else if (y < lastScrollY.current) {
-        // scrolling up
         setIsHidden(false);
       }
       lastScrollY.current = y;
     }
-
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [isOpen]);
@@ -63,24 +55,24 @@ export function Navigation() {
     <header
       ref={headerRef}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border transition-transform duration-300",
+        "fixed top-0 left-0 right-0 z-50 bg-background/100 backdrop-blur-sm border-b border-border transition-transform duration-500 ease-in-out h-24 md:h-28",
         isHidden && "-translate-y-full"
       )}
     >
-      <nav className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20">
+      <nav className="container mx-auto px-4 h-full">
+        <div className="flex items-center justify-between h-full">
 
-          {/* 🟢 LOGO SECTION */}
-          <Link to="/" className="flex items-center gap-3 group">
-             <div className="relative overflow-hidden rounded-md shadow-sm border border-gray-100 h-10 w-10">
+          {/* 🟢 LOGO SECTION (Bigger & Updated) */}
+          <Link to="/" className="flex items-center gap-4 group py-2">
+             <div className="relative overflow-hidden h-16 w-16 md:h-20 md:w-20 transition-transform duration-300 group-hover:scale-105">
                <img 
                  src={logo} 
                  alt="Dharvista Logo" 
-                 className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                 className="h-full w-full object-cover mix-blend-multiply" 
                />
              </div>
-            <span className="text-xl md:text-2xl font-bold text-primary tracking-tight">
-               Dharvista
+            <span className="text-2xl md:text-3xl font-bold text-primary tracking-tight uppercase">
+              DHARVISTA
             </span>
           </Link>
 
@@ -91,11 +83,16 @@ export function Navigation() {
                 key={link.href}
                 to={link.href}
                 className={cn(
-                  "nav-link text-sm uppercase tracking-wide font-medium text-gray-600 hover:text-primary transition-colors",
-                  location.pathname === link.href && "text-primary font-bold"
+                  "nav-link text-sm uppercase tracking-wider font-semibold text-gray-600 hover:text-primary transition-all duration-300 relative group py-2",
+                  location.pathname === link.href && "text-primary"
                 )}
               >
                 {link.label}
+                {/* 🟡 Accent Color (Yellow) used for Active State Underline */}
+                <span className={cn(
+                  "absolute bottom-0 left-0 w-0 h-1 bg-accent transition-all duration-300 group-hover:w-full rounded-full",
+                  location.pathname === link.href && "w-full"
+                )}/>
               </Link>
             ))}
           </div>
@@ -103,25 +100,25 @@ export function Navigation() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-foreground"
+            className="md:hidden p-2 text-foreground hover:bg-gray-100 rounded-md transition-colors"
             aria-label="Toggle menu"
           >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
           </button>
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden py-4 border-t border-border animate-fade-in bg-background">
-            <div className="flex flex-col gap-4 px-2">
+          <div className="md:hidden py-6 border-t border-border animate-fade-in bg-background h-screen">
+            <div className="flex flex-col gap-6 px-4">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   to={link.href}
                   onClick={() => setIsOpen(false)}
                   className={cn(
-                    "nav-link text-base py-2 font-medium",
-                    location.pathname === link.href && "text-primary"
+                    "text-lg font-medium border-b border-gray-50 pb-2",
+                    location.pathname === link.href ? "text-primary border-accent" : "text-gray-600"
                   )}
                 >
                   {link.label}

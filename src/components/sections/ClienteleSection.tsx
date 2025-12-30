@@ -3,7 +3,8 @@ import { MOCK_CLIENTS } from "@/mock/clients";
 
 export default function ClienteleSection() {
   return (
-    <section className="section-padding bg-gray-50 border-t border-border/50 py-20">
+    // 🟢 CHANGED: bg-gray-50 -> bg-amber-50, border color updated
+    <section className="section-padding bg-amber-50 border-t border-amber-100 py-20">
       <div className="container mx-auto px-4">
         
         {/* Section Header */}
@@ -22,11 +23,11 @@ export default function ClienteleSection() {
           {MOCK_CLIENTS.map((client, index) => (
             <div 
               key={client.id} 
-              className="group relative flex flex-col items-center justify-center p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-48"
+              // 🟢 CHANGED: border-gray-100 -> border-amber-100
+              className="group relative flex flex-col items-center justify-center p-8 bg-white rounded-2xl border border-amber-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-48"
             >
               {/* Logo Container */}
               <div className="h-20 w-full flex items-center justify-center mb-4 px-4">
-                {/* 🟢 MODIFIED IMAGE TAG: Removed grayscale classes */}
                 <img 
                   src={client.logo} 
                   alt={`${client.name} logo`} 

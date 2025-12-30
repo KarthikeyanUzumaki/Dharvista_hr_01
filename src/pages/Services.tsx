@@ -103,8 +103,8 @@ export default function Services() {
         </div>
       </section>
 
-      {/* 🟢 SERVICES GRID SECTION (Grey) */}
-      <section className="section-padding bg-gray-100">
+      {/* 🟢 SERVICES GRID SECTION (Background Changed to Amber-50) */}
+      <section className="section-padding bg-white">
         <div className="container-wide">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -122,14 +122,17 @@ export default function Services() {
               return (
                 <div 
                   key={index} 
-                  className="flex flex-col w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1.5rem)] p-10 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                  // 🟢 UPDATED: border-gray-100 -> border-amber-100
+                  className="flex flex-col w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1.5rem)] p-10 rounded-2xl bg-white border <border-amber-100></border-amber-50> shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                 >
                   <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-2xl mb-8 shrink-0">
                     <Icon className="h-8 w-8" />
                   </div>
                   <h3 className="font-bold text-2xl mb-4 text-gray-900">{service.title}</h3>
                   <p className="text-gray-500 leading-relaxed text-base mb-8">{service.description}</p>
-                  <div className="mt-auto pt-8 border-t border-gray-100">
+                  
+                  {/* 🟢 UPDATED: border-t border-amber-100 */}
+                  <div className="mt-auto pt-8 border-t border-amber-100">
                     <h4 className="font-semibold text-gray-900 mb-4 text-sm uppercase tracking-wide">Key Features</h4>
                     <ul className="space-y-4">
                       {service.features.map((feature, i) => (
@@ -147,8 +150,8 @@ export default function Services() {
         </div>
       </section>
 
-      {/* 🟢 RECRUITMENT PROCESS (White) */}
-      <section className="section-padding bg-white border-t border-gray-100">
+      {/* 🟢 RECRUITMENT PROCESS (White BG, Updated Top Border) */}
+      <section className="section-padding bg-amber-50 border-t border-amber-100">
         <div className="container-wide">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -164,10 +167,10 @@ export default function Services() {
             {processSteps.map((item, index) => (
               <div 
                 key={index}
-                className="group p-8 rounded-2xl border border-gray-100 bg-white hover:border-primary/30 hover:shadow-xl transition-all duration-300"
+                // 🟢 UPDATED: border-amber-100 for consistency
+                className="group p-8 rounded-2xl border border-amber-100 bg-white hover:border-primary/30 hover:shadow-xl transition-all duration-300"
               >
-                {/* 🟢 UPDATED: 'text-blue-300' ensures it is clearly visible always, not just on hover */}
-                <div className="text-5xl font-bold text-blue-300 mb-4 group-hover:text-primary transition-colors duration-300">
+                <div className="text-5xl font-bold text-blue-950 mb-4 group-hover:text-primary transition-colors duration-300">
                   {item.step}
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
@@ -182,11 +185,8 @@ export default function Services() {
         </div>
       </section>
 
-      {/* 🟢 CLIENTELE (Grey) */}
-      <ClienteleSection />
-      
-      {/* CTA Section */}
-      <section className="section-padding bg-secondary">
+      {/* 🟢 CTA Section (Background Changed to Amber-50) */}
+      <section className="section-padding bg-amber-50">
         <div className="container-wide text-center">
           <div className="opacity-0 animate-fade-in" style={{ animationDelay: "150ms" }}>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">

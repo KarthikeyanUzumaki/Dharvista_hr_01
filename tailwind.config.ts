@@ -57,14 +57,9 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // We can keep these, but they will rely on the updated variables
         navy: {
-          DEFAULT: "hsl(var(--navy))",
-          dark: "hsl(var(--navy-dark))",
-          light: "hsl(var(--navy-light))",
-        },
-        gray: {
-          light: "hsl(var(--gray-light))",
-          medium: "hsl(var(--gray-medium))",
+            DEFAULT: "hsl(var(--navy))",
         },
       },
       fontFamily: {
