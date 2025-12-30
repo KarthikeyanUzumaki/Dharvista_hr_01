@@ -1,39 +1,41 @@
 // src/services/jobService.ts
 import { Job } from "@/types";
-// 🟢 Import the actual jobs from your mock file
 import { MOCK_JOBS } from "@/mock/jobs"; 
 
 const STORAGE_KEY = "dharvista_jobs";
 
 export const jobService = {
-  // 🟢 Updated to use MOCK_JOBS
   checkAndSeed: () => {
-    const data = localStorage.getItem(STORAGE_KEY);
-    // If no data OR if data is empty array, seed it
-    if (!data || JSON.parse(data).length === 0) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(MOCK_JOBS));
-    }
+    // We handle seeding in getAll now to ensure it's always up to date
   },
 
   getAll: async (): Promise<Job[]> => {
     const data = localStorage.getItem(STORAGE_KEY);
-    if (!data) {
-      // Seed if data doesn't exist at all
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(MOCK_JOBS));
-      return MOCK_JOBS;
-    }
-    const parsedData = JSON.parse(data);
-    // If data exists but is an empty list, seed it
-    if (parsedData.length === 0) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(MOCK_JOBS));
-        return MOCK_JOBS;
-    }
-    return parsedData;
+    const storedJobs: Job[] = data ? JSON.parse(data) : [];
+
+    // 🟢 INTELLIGENT SYNC:
+    // This ensures that if you change code in 'MOCK_JOBS', it updates in the browser immediately.
+    
+    // 1. Create a Map of existing jobs (User-created + Old Mock jobs)
+    const jobMap = new Map(storedJobs.map(j => [j.id, j]));
+
+    // 2. Force-update the Mock Jobs from your code
+    // This overwrites the old cached version with your new code changes
+    MOCK_JOBS.forEach(mockJob => {
+      jobMap.set(mockJob.id, mockJob);
+    });
+
+    // 3. Convert back to array
+    const mergedJobs = Array.from(jobMap.values());
+
+    // 4. Save the fresh list back to storage
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(mergedJobs));
+
+    return mergedJobs;
   },
 
   getById: async (id: string): Promise<Job | undefined> => {
-    const data = localStorage.getItem(STORAGE_KEY);
-    const jobs: Job[] = data ? JSON.parse(data) : [];
+    const jobs = await jobService.getAll(); // Reuse the sync logic above
     return jobs.find((j) => j.id === id);
   },
 
@@ -45,15 +47,22 @@ export const jobService = {
         updatedAt: new Date().toISOString(),
         salaryCurrency: "INR"
     };
-    const data = localStorage.getItem(STORAGE_KEY);
-    const jobs = data ? JSON.parse(data) : [];
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([newJob, ...jobs]));
+    
+    // Get current fresh list
+    const jobs = await jobService.getAll();
+    
+    // Add new job to the TOP of the list
+    const updatedJobs = [newJob, ...jobs];
+    
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedJobs));
     return true;
   },
 
   delete: async (id: string) => {
     const data = localStorage.getItem(STORAGE_KEY);
     if (!data) return false;
+    
+    // Filter out the deleted job
     const jobs = JSON.parse(data).filter((j: Job) => j.id !== id);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(jobs));
     return true;
