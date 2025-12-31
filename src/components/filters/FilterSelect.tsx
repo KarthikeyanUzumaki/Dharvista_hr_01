@@ -8,6 +8,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList, // Added CommandList for better structure
 } from "@/components/ui/command";
 import {
   Popover,
@@ -39,7 +40,8 @@ export function FilterSelect({
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {value || label}
+          {/* Show "All {label}" if value is empty, otherwise show value */}
+          {value ? value : `All ${label}`}
           <ChevronDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -47,36 +49,47 @@ export function FilterSelect({
       <PopoverContent className="w-[250px] p-0">
         <Command>
           <CommandInput placeholder={`Search ${label.toLowerCase()}...`} />
-          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
 
-          <CommandGroup>
-            <CommandItem
-              onSelect={() => {
-                onChange("");
-                setOpen(false);
-              }}
-            >
-              All {label}
-            </CommandItem>
-
-            {options.map((option) => (
+            <CommandGroup>
+              {/* 🟢 "ALL" OPTION with Checkmark */}
               <CommandItem
-                key={option}
+                value={`All ${label}`} // Ensure it's searchable
                 onSelect={() => {
-                  onChange(option);
+                  onChange("");
                   setOpen(false);
                 }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === option ? "opacity-100" : "opacity-0"
+                    value === "" ? "opacity-100" : "opacity-0"
                   )}
                 />
-                {option}
+                All {label}
               </CommandItem>
-            ))}
-          </CommandGroup>
+
+              {options.map((option) => (
+                <CommandItem
+                  key={option}
+                  value={option}
+                  onSelect={() => {
+                    onChange(option);
+                    setOpen(false);
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      value === option ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {option}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
