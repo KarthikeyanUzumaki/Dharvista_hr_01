@@ -1,7 +1,8 @@
 import { Job } from "@/types";
 import { MOCK_JOBS } from "@/mock/jobs"; 
 
-const STORAGE_KEY = "dharvista_jobs";
+// 🟢 UPDATED: Changed key to '_v2' to force a fresh load of the 23 jobs
+const STORAGE_KEY = "dharvista_jobs_v2";
 
 export const jobService = {
   checkAndSeed: () => {
@@ -22,7 +23,6 @@ export const jobService = {
     }
 
     // 🟢 CASE 2: Data Exists? Return it exactly as is
-    // This respects your deletions. It will NOT force-add jobs from the code file anymore.
     const storedJobs: Job[] = JSON.parse(data);
     return storedJobs;
   },
@@ -69,7 +69,7 @@ export const jobService = {
     // Filter out the deleted job
     const jobs = JSON.parse(data).filter((j: Job) => j.id !== id);
     
-    // Save the new list (which is now 1 item shorter)
+    // Save the new list
     localStorage.setItem(STORAGE_KEY, JSON.stringify(jobs));
     return true;
   }
