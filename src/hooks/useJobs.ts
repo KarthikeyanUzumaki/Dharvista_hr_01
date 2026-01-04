@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import { Job } from "@/types";
-import { jobService } from "@/services/jobService"; // Import the new service
-import { toast } from "@/hooks/use-toast";
+import { Job, JobStatus } from "@/types"; // ✅ Ensure JobStatus is imported
+import { jobService } from "@/services/jobService";
+import { useToast } from "@/hooks/use-toast";
 
 export function useJobs() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
-  // Load jobs on mount
   useEffect(() => {
     fetchJobs();
   }, []);
@@ -29,11 +29,35 @@ export function useJobs() {
     try {
       await jobService.create(jobData);
       toast({ title: "Success", description: "Job posted successfully!" });
-      fetchJobs(); // Refresh list
+      fetchJobs();
       return true;
     } catch (error) {
       toast({ title: "Error", description: "Failed to post job", variant: "destructive" });
       return false;
+    }
+  };
+
+  const toggleJobStatus = async (job: Job) => {
+    // ✅ Fix: Add fallback for updatedAt if missing
+    const safeJob = { 
+        ...job, 
+        updatedAt: job.updatedAt || new Date().toISOString() 
+    };
+    
+    // ✅ Fix: Explicitly cast the string to JobStatus type
+    const newStatus = (safeJob.status === 'published' ? 'closed' : 'published') as JobStatus;
+    
+    const updatedJob = { ...safeJob, status: newStatus };
+    
+    try {
+      await jobService.update(updatedJob);
+      toast({ 
+        title: newStatus === 'closed' ? "Job Closed" : "Job Republished", 
+        description: `Job is now ${newStatus}.` 
+      });
+      fetchJobs(); 
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to update status", variant: "destructive" });
     }
   };
 
@@ -43,11 +67,18 @@ export function useJobs() {
     try {
       await jobService.delete(id);
       toast({ title: "Deleted", description: "Job removed successfully" });
-      fetchJobs(); // Refresh list
+      fetchJobs();
     } catch (error) {
       toast({ title: "Error", description: "Failed to delete job", variant: "destructive" });
     }
   };
 
-  return { jobs, isLoading, createJob, deleteJob, refresh: fetchJobs };
+  return { 
+    jobs, 
+    isLoading, 
+    createJob, 
+    deleteJob, 
+    toggleJobStatus, // ✅ Added to return object
+    refresh: fetchJobs 
+  };
 }

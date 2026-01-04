@@ -5,6 +5,8 @@ import { ArrowRight, Users, Target, Award, Briefcase } from "lucide-react";
 import IndustriesSection from "@/components/sections/IndustriesSection";
 import LatestJobsSection from "@/components/sections/LatestJobsSection";
 import ClienteleSection from "@/components/sections/ClienteleSection";
+// 🟢 Import the new component
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 
 export default function Index() {
   return (
@@ -142,11 +144,9 @@ export default function Index() {
               return (
                 <div
                   key={index}
-                  // 🟢 UPDATED: border-border -> border-amber-100 to blend with gold BG
                   className="opacity-0 animate-slide-up group relative rounded-2xl border border-amber-100 bg-white p-10 text-center transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:border-accent/30"
                   style={{ animationDelay: `${100 + index * 75}ms` }}
                 >
-                  {/* Icon Circle */}
                   <div className="relative z-10 mb-6 flex justify-center">
                     <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center transition-all duration-300 group-hover:bg-primary group-hover:scale-110">
                       <Icon className="h-10 w-10 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
@@ -166,15 +166,15 @@ export default function Index() {
         </div>
       </section>
 
-      {/* 🟢 INDUSTRIES (Imported - This should be White based on previous steps, or Amber if you updated it) */}
+      {/* 🟢 INDUSTRIES */}
       <IndustriesSection />
 
-      {/* 🟢 TRUSTED BY (Wrapped in Amber-50) */}
+      {/* 🟢 TRUSTED BY */}
       <div className="bg-amber-50">
         <ClienteleSection />
       </div>
       
-      {/* 🟢 CTA Section (BG is Amber-50) */}
+      {/* 🟢 CTA Section */}
       <section className="section-padding bg-amber-50 border-t border-amber-100">
         <div className="container-wide text-center">
           <div className="opacity-0 animate-fade-in" style={{ animationDelay: "150ms" }}>
@@ -185,7 +185,6 @@ export default function Index() {
               Browse our current openings or get in touch with our team to discuss
               your career aspirations.
             </p>
-            {/* Original button style kept */}
             <Button asChild size="lg">
               <Link to="/jobs">
                 Explore Careers
@@ -195,6 +194,9 @@ export default function Index() {
           </div>
         </div>
       </section>
+
+      {/* 🟢 ADDED: Floating WhatsApp Button (Threshold 500px to clear the big hero) */}
+      <FloatingWhatsApp threshold={500} />
     </Layout>
   );
 }

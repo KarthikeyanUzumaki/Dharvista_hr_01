@@ -1,62 +1,174 @@
 import { Link } from "react-router-dom";
+import { 
+  Facebook, 
+  Instagram, 
+  Linkedin, 
+  Twitter, 
+  MapPin, 
+  Phone, 
+  Mail, 
+  ArrowRight,
+  Heart 
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import logo from "@/assets/dharvista-logo.jpg";
+import collabLogo from "@/assets/collabrate.jpg"; 
 
 export function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground">
-      <div className="container-wide py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand */}
-          <div className="md:col-span-2">
-            <h3 className="text-2xl font-bold mb-4"> Dharvista</h3>
-            <p className="text-primary-foreground/80 max-w-md">
-              A leading HR consultancy connecting exceptional talent with world-class organizations. 
-              We believe in building lasting partnerships that drive success.
+    <footer className="w-full bg-gradient-to-b from-primary from-70% to-white text-primary-foreground print:hidden">
+      
+      {/* 1️⃣ MAIN FOOTER SECTION */}
+      <div className="pt-16 pb-12">
+        <div className="container-wide grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          
+          {/* COLUMN 1: Brand & Socials */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="h-12 w-12 rounded-lg overflow-hidden bg-white/10 p-1 backdrop-blur-sm border border-white/10 shadow-sm">
+                <img src={logo} alt="Dharvista Logo" className="h-full w-full object-cover rounded-md" />
+              </div>
+              
+              {/* Company Name with Custom Font */}
+              <span 
+                className="text-2xl text-white drop-shadow-sm uppercase"
+                style={{ 
+                  fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', 
+                  fontWeight: 900, 
+                  letterSpacing: '1.5px' 
+                }}
+              >
+                DHARVISTA
+              </span>
+            </div>
+            <p className="text-blue-50/90 text-sm leading-relaxed font-light">
+              Empowering talent and connecting opportunities. Your trusted partner for recruitment and placement solutions in South Tamil Nadu.
             </p>
+            
+            <div className="flex gap-4">
+              <SocialLink href="https://instagram.com" icon={Instagram} label="Instagram" />
+              <SocialLink href="https://twitter.com" icon={Twitter} label="Twitter" />
+              <SocialLink href="https://linkedin.com" icon={Linkedin} label="LinkedIn" />
+              <SocialLink href="https://facebook.com" icon={Facebook} label="Facebook" />
+            </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/about" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/services" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link to="/jobs" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Current Jobs
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Contact
-                </Link>
-              </li>
+          {/* COLUMN 2: Quick Links */}
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold text-amber-400 tracking-wide">Quick Links</h3>
+            <ul className="space-y-3">
+              {['Home', 'Jobs', 'About', 'Services'].map((item) => (
+                <li key={item}>
+                  <Link 
+                    to={item === 'Home' ? '/' : `/${item.toLowerCase()}`} 
+                    className="text-blue-50/80 hover:text-white hover:translate-x-2 transition-all duration-300 inline-flex items-center gap-3 text-[15px]"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]"></span>
+                    {item}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
-          <div>
-            <h4 className="font-semibold mb-4">Contact</h4>
-            <ul className="space-y-2 text-primary-foreground/80">
-              <li>3/666, A-1, M.D.R Nagar East<br />
-              Aruppukottai, Tamil Nadu</li>
-              <li>hr@ Dharvista.com</li>
-              <li>+91 80564 79722</li>
-            </ul>
+          {/* COLUMN 3: Location */}
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold text-amber-400 tracking-wide">Location</h3>
+            <div className="flex items-start gap-3 text-blue-50/90 group leading-relaxed">
+              <MapPin className="h-6 w-6 text-amber-400 mt-0.5 shrink-0 group-hover:text-amber-300 transition-colors drop-shadow-sm" />
+              <p className="text-[15px]">
+                1/209/C4, Kural Vidhi,<br />
+                Jeyaram Nagar, Main Road,<br />
+                Aathipatti, Aruppukottai - 626 101,<br />
+                Tamil Nadu, India.
+              </p>
+            </div>
           </div>
+
+          {/* COLUMN 4: Contact Section */}
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold text-amber-400 tracking-wide">Contact</h3>
+            
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-blue-50/90 group">
+                <Phone className="h-5 w-5 text-amber-400 shrink-0 group-hover:text-amber-300 transition-colors drop-shadow-sm" />
+                <div className="text-[15px] space-y-1">
+                  <p>+91 6381451289</p>
+                  <p>+91 9345026323</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 text-blue-50/90 group">
+                <Mail className="h-5 w-5 text-amber-400 shrink-0 group-hover:text-amber-300 transition-colors drop-shadow-sm" />
+                <a href="mailto:contact@dharvistahr.com" className="text-[15px] hover:text-white transition-colors hover:underline decoration-amber-400/50 underline-offset-4">
+                  contact@dharvistahr.com
+                </a>
+              </div>
+            </div>
+
+            <Button 
+              asChild 
+              className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold tracking-wide mt-4 border-none shadow-lg shadow-amber-900/30 py-6 text-base group relative overflow-hidden"
+            >
+              <Link to="/contact">
+                <span className="relative z-10 flex items-center justify-center">
+                  Contact Us <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </span>
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+              </Link>
+            </Button>
+          </div>
+
         </div>
+      </div>
 
-        <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-primary-foreground/60 text-sm">
-          <p>© {new Date().getFullYear()}  Dharvista. All rights reserved.</p>
+      {/* 2️⃣ BOTTOM FOOTER SECTION */}
+      <div className="bg-white border-t border-slate-100 py-6">
+        <div className="container-wide flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+          
+          <p className="text-slate-500 text-xs font-medium tracking-wide order-3 md:order-1">
+            © 2026 Dharvista. All rights reserved.
+          </p>
+
+          {/* 🟢 UPDATED: Bold Text, Removed Badge Styling */}
+          <div className="order-1 md:order-2 flex items-center gap-2 text-sm font-bold text-slate-600">
+             Made in <span className="text-amber-600">தமிழ்நாடு</span>
+             <Heart className="h-4 w-4 text-red-500 fill-red-500 animate-pulse" />
+          </div>
+
+          <div className="order-2 md:order-3 flex items-center gap-3">
+            <span className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Designed by</span>
+            <a 
+              href="https://instagram.com/collab.rate" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:opacity-80 transition-opacity"
+            >
+              {/* 🟢 UPDATED: Removed 'mix-blend-multiply' so logo is always original */}
+              <img 
+                src={collabLogo} 
+                alt="Collabrate Agency" 
+                className="h-8 md:h-6 w-auto object-contain" 
+              />
+            </a>
+          </div>
+
         </div>
       </div>
     </footer>
+  );
+}
+
+function SocialLink({ href, icon: Icon, label }: { href: string; icon: any; label: string }) {
+  return (
+    <a 
+      href={href} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="h-11 w-11 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-blue-50 hover:bg-amber-500 hover:border-amber-500 hover:text-white transition-all duration-300 backdrop-blur-md shadow-sm hover:shadow-amber-500/20 group"
+    >
+      <Icon className="h-5 w-5 group-hover:scale-110 transition-transform" />
+    </a>
   );
 }

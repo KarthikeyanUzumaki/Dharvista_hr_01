@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Phone, MapPin, Linkedin, Instagram, MessageCircle, ExternalLink } from "lucide-react";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 
 export default function Contact() {
   const { toast } = useToast();
@@ -27,25 +28,21 @@ export default function Contact() {
     (e.target as HTMLFormElement).reset();
   };
 
-  // The Map Link provided
   const mapLink = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3750.6625872747986!2d78.12449367479992!3d9.498169090583133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b013b006f2e2729%3A0x45cabefdceceb308!2sDHARVISTA%20HR%20%26%20Placement%20Solutions!5e1!3m2!1sen!2sus!4v1766753981266!5m2!1sen!2sus";
 
   return (
     <Layout>
-      {/* 🟢 HERO SECTION (Matched to Service Page Style) */}
+      {/* HERO SECTION */}
       <section className="relative min-h-[40vh] flex flex-col items-center justify-center bg-primary text-primary-foreground overflow-hidden pt-20 pb-16">
-        {/* Background Layers */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary via-primary to-[#051530]" />
         <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-[100px] pointer-events-none" />
 
-        {/* Content */}
         <div className="relative z-10 container-wide text-center">
           <div className="opacity-0 animate-slide-up" style={{ animationDelay: "100ms" }}>
             <h1 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">Contact Us</h1>
           </div>
-
           <div className="opacity-0 animate-fade-in" style={{ animationDelay: "150ms" }}>
             <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto">
               Get in touch with our team to discuss your requirements
@@ -101,7 +98,6 @@ export default function Contact() {
                   />
                 </div>
 
-                {/* 🟢 UPDATED: Submit Button uses Accent (Yellow) */}
                 <Button type="submit" size="lg" disabled={isSubmitting} className="bg-accent text-accent-foreground hover:bg-accent/90 w-full md:w-auto font-bold shadow-md">
                   {isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
@@ -113,12 +109,11 @@ export default function Contact() {
               <h2 className="text-2xl font-bold mb-6">Get in Touch</h2>
               <div className="space-y-6">
                 
-                {/* Address Card - Clickable Link to Map */}
+                {/* Address Card */}
                 <a 
                     href="https://www.google.com/maps/place/DHARVISTA+HR+%26+Placement+Solutions/@9.4981691,78.1244937,17z/data=!3m1!4b1!4m6!3m5!1s0x3b013b006f2e2729:0x45cabefdceceb308!8m2!3d9.4981691!4d78.1266824!16s%2Fg%2F11c4840j4m?entry=ttu&g_ep=EgoyMDI1MDEyNi4wIKXMDSoASAFQAw%3D%3D" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    // 🟢 UPDATED: hover:bg-secondary/50 -> hover:bg-amber-50
                     className="card-corporate flex items-start gap-4 opacity-0 animate-slide-up hover:bg-amber-50 transition-colors cursor-pointer group border border-gray-100" 
                     style={{ animationDelay: "275ms" }}
                 >
@@ -139,7 +134,6 @@ export default function Contact() {
                 </a>
 
                 {/* Phone Card */}
-                {/* 🟢 UPDATED: Added border-gray-100 for consistency */}
                 <div className="card-corporate flex items-start gap-4 opacity-0 animate-slide-up border border-gray-100 hover:bg-amber-50 transition-colors" style={{ animationDelay: "350ms" }}>
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                     <Phone className="h-6 w-6 text-primary" />
@@ -154,7 +148,6 @@ export default function Contact() {
                 </div>
 
                 {/* Email Card */}
-                {/* 🟢 UPDATED: Added border-gray-100 for consistency */}
                 <div className="card-corporate flex items-start gap-4 opacity-0 animate-slide-up border border-gray-100 hover:bg-amber-50 transition-colors" style={{ animationDelay: "425ms" }}>
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                     <Mail className="h-6 w-6 text-primary" />
@@ -177,7 +170,6 @@ export default function Contact() {
                     href="https://www.linkedin.com/company/109600486/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    // 🟢 UPDATED: bg-secondary -> bg-amber-50, hover:bg-amber-100, border-amber-100
                     className="flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-100 hover:bg-amber-100 rounded-md transition-colors text-sm font-medium text-gray-800"
                   >
                     <Linkedin className="h-4 w-4 text-primary" />
@@ -205,7 +197,6 @@ export default function Contact() {
               </div>
 
               {/* Office Hours */}
-              {/* 🟢 UPDATED: bg-secondary -> bg-amber-50, border-amber-100 */}
               <div className="mt-8 p-6 bg-amber-50 border border-amber-100 rounded-lg opacity-0 animate-fade-in" style={{ animationDelay: "600ms" }}>
                 <h3 className="font-semibold mb-2 text-gray-900">Office Hours</h3>
                 <p className="text-muted-foreground">
@@ -214,8 +205,7 @@ export default function Contact() {
                 </p>
               </div>
 
-              {/* Google Map Visual Embed */}
-              {/* 🟢 UPDATED: Added border-amber-100 */}
+              {/* Google Map */}
               <div className="mt-8 rounded-xl overflow-hidden shadow-sm border border-amber-100 opacity-0 animate-fade-in h-[300px]" style={{ animationDelay: "650ms" }}>
                   <iframe 
                     src={mapLink}
@@ -233,6 +223,9 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      {/* 🟢 UPDATED: threshold={-1} forces it to show immediately */}
+      <FloatingWhatsApp threshold={-1} />
     </Layout>
   );
 }

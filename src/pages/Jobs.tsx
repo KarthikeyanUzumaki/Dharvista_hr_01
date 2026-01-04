@@ -1,5 +1,3 @@
-// src/pages/Jobs.tsx
-
 import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
@@ -32,13 +30,19 @@ export default function JobsPage() {
   const [visibleCount, setVisibleCount] = useState(6);
   const JOBS_PER_PAGE = 6;
 
+  // 🟢 1. Filter Industries: Only show industries from PUBLISHED jobs
   const industries = useMemo(() => {
-    const raw = jobs.map((j) => j.industry);
+    const raw = jobs
+      .filter(j => j.status === 'published') // Check status
+      .map((j) => j.industry);
     return Array.from(new Set(raw)).filter(Boolean).sort();
   }, [jobs]);
 
+  // 🟢 2. Filter Locations: Only show locations from PUBLISHED jobs
   const locations = useMemo(() => {
-    const raw = jobs.map((j) => j.location);
+    const raw = jobs
+      .filter(j => j.status === 'published') // Check status
+      .map((j) => j.location);
     return Array.from(new Set(raw)).filter(Boolean).sort();
   }, [jobs]);
 
@@ -52,6 +56,9 @@ export default function JobsPage() {
 
   const filteredJobs = useMemo(() => {
     return jobs.filter((job) => {
+      // 🟢 3. CRITICAL FIX: Hide jobs that are not 'published'
+      if (job.status !== 'published') return false;
+
       const matchesSearch =
         job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -78,7 +85,6 @@ export default function JobsPage() {
     setIsFilterSheetOpen(false);
   };
 
-  // Helper Component for Filter Logic
   const FilterFormContent = () => (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -145,10 +151,7 @@ export default function JobsPage() {
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="flex flex-col lg:flex-row gap-8 relative z-20">
             
-            {/* 🖥️ DESKTOP SIDEBAR 
-               ✅ RESTORED: 'sticky top-24' added back.
-               It will stick to the screen on Desktop as you scroll.
-            */}
+            {/* DESKTOP SIDEBAR */}
             <aside className="hidden lg:block w-72 space-y-6 h-fit bg-white p-6 rounded-xl border border-gray-100 shadow-sm sticky top-24">
               <div className="flex items-center gap-2 font-semibold text-lg pb-4 border-b">
                 <Filter className="h-5 w-5 text-primary" /> Filter Jobs
@@ -159,10 +162,7 @@ export default function JobsPage() {
             {/* JOB LISTINGS GRID */}
             <div className="flex-1 space-y-5">
               
-              {/* 📱 MOBILE FILTER BAR 
-                  ✅ UPDATED: Removed 'sticky top-20'.
-                  It is now just 'mb-4', so it stays at the top and scrolls away.
-              */}
+              {/* MOBILE FILTER BAR */}
               <div className="lg:hidden mb-4 z-30">
                 <Sheet open={isFilterSheetOpen} onOpenChange={setIsFilterSheetOpen}>
                   <SheetTrigger asChild>
@@ -267,7 +267,7 @@ function JobCard({ job }: { job: Job }) {
                     {job.title}
                     </h3>
                     
-                    {/* 🟡 Yellow Badge for Urgent */}
+                    {/* Yellow Badge for Urgent */}
                     {job.priority === 'urgent' && (
                         <Badge variant="secondary" className="flex items-center gap-1 text-[10px] px-1.5 h-5 bg-accent text-accent-foreground border-yellow-400">
                             <Flame className="w-3 h-3 fill-current" /> Urgent

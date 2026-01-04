@@ -62,7 +62,7 @@ export function Navigation() {
       <nav className="container mx-auto px-4 h-full">
         <div className="flex items-center justify-between h-full">
 
-          {/* 🟢 LOGO SECTION (Bigger & Updated) */}
+          {/* 🟢 LOGO SECTION */}
           <Link to="/" className="flex items-center gap-4 group py-2">
              <div className="relative overflow-hidden h-16 w-16 md:h-20 md:w-20 transition-transform duration-300 group-hover:scale-105">
                <img 
@@ -71,7 +71,15 @@ export function Navigation() {
                  className="h-full w-full object-cover mix-blend-multiply" 
                />
              </div>
-            <span className="text-2xl md:text-3xl font-bold text-primary tracking-tight uppercase">
+            {/* 🟢 UPDATED: Font Family applied, Size kept as requested */}
+            <span 
+              className="text-2xl md:text-3xl text-primary uppercase"
+              style={{ 
+                fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', 
+                fontWeight: 900, 
+                letterSpacing: '1.5px' 
+              }}
+            >
               DHARVISTA
             </span>
           </Link>
